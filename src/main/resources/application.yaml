@@ -1,0 +1,32 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: control
+  cloud:
+    function:
+      definition: saveResource; openResource; consumeResource
+
+    stream:
+      bindings:
+        openResource-in-0:
+          destination: gateway.resource.open
+          group: control
+        openResource-out-0:
+          destination: control.resource.open
+        consumeResource-in-0:
+          destination: object.resource.open.response
+          group: control
+        consumeResource-out-0:
+          destination: control.resource.open.response
+        saveResource-in-0:
+          destination: gateway.resource.save
+          group: control
+        saveResource-out-0:
+          destination: control.resource.save
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
