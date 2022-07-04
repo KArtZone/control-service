@@ -9,19 +9,19 @@ import tech.inno.controlservice.domain.ResourceDto;
 import java.util.function.Function;
 
 import static tech.inno.controlservice.config.Constants.REQUEST_ID;
-import static tech.inno.controlservice.statemachine.state.ResourceState.DRAFT;
+import static tech.inno.controlservice.statemachine.state.ResourceState.REGISTERED;
 
 @Slf4j
 @Component
-public class SaveResource implements Function<Message<ResourceDto>, Message<ResourceDto>> {
+public class RegisterResource implements Function<Message<ResourceDto>, Message<ResourceDto>> {
 
     @Override
-    public Message<ResourceDto> apply(final Message<ResourceDto> message) {
+    public Message<ResourceDto> apply(Message<ResourceDto> message) {
         final String requestId = message.getHeaders().get(REQUEST_ID, String.class);
         log.info("RequestId: {}", requestId);
         final ResourceDto resourceDto = message.getPayload();
-        log.info("Saving resource: {}", resourceDto);
-        resourceDto.setState(DRAFT);
+        log.info("Processing (register) resource: {}", resourceDto);
+        resourceDto.setState(REGISTERED);
         return MessageBuilder.withPayload(resourceDto)
                 .setHeader(REQUEST_ID, requestId)
                 .build();

@@ -1,29 +1,29 @@
 package tech.inno.controlservice.functions;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import tech.inno.controlservice.domain.ResourceDto;
+import tech.inno.controlservice.service.ResourceService;
 
 import java.util.function.Function;
 
 import static tech.inno.controlservice.config.Constants.REQUEST_ID;
-import static tech.inno.controlservice.statemachine.state.ResourceState.DRAFT;
 
 @Slf4j
 @Component
-public class SaveResource implements Function<Message<ResourceDto>, Message<ResourceDto>> {
+@RequiredArgsConstructor
+public class RegisterResourceResponse implements Function<Message<ResourceDto>, Message<ResourceDto>> {
+
+    private final ResourceService service;
 
     @Override
     public Message<ResourceDto> apply(final Message<ResourceDto> message) {
         final String requestId = message.getHeaders().get(REQUEST_ID, String.class);
         log.info("RequestId: {}", requestId);
-        final ResourceDto resourceDto = message.getPayload();
-        log.info("Saving resource: {}", resourceDto);
-        resourceDto.setState(DRAFT);
-        return MessageBuilder.withPayload(resourceDto)
-                .setHeader(REQUEST_ID, requestId)
-                .build();
+        service.register(message.getPayload());
+        log.info("Registered resource: {}", message.getPayload());
+        return message;
     }
 }

@@ -14,16 +14,16 @@ import static tech.inno.controlservice.config.Constants.REQUEST_ID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ConsumeResource implements Function<Message<ResourceDto>, Message<ResourceDto>> {
+public class SaveResourceResponse implements Function<Message<ResourceDto>, Message<ResourceDto>> {
 
     private final ResourceService resourceService;
 
     @Override
     public Message<ResourceDto> apply(final Message<ResourceDto> message) {
-        //todo добавить вычисление политик
         final String requestId = message.getHeaders().get(REQUEST_ID, String.class);
         log.info("RequestId: {}", requestId);
-        log.info("Consume resource: {}", message.getPayload());
+        log.info("Saved resource: {}", message.getPayload());
+        resourceService.create(message.getPayload());
         return message;
     }
 }

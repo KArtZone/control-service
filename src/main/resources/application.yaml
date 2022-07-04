@@ -6,25 +6,44 @@ spring:
     name: control
   cloud:
     function:
-      definition: saveResource; openResource; consumeResource
+      definition: saveResource; openResource; saveResourceResponse; openResourceResponse; registerResource; registerResourceResponse
 
     stream:
       bindings:
-        openResource-in-0:
-          destination: gateway.resource.open
-          group: control
-        openResource-out-0:
-          destination: control.resource.open
-        consumeResource-in-0:
-          destination: object.resource.open.response
-          group: control
-        consumeResource-out-0:
-          destination: control.resource.open.response
+
         saveResource-in-0:
           destination: gateway.resource.save
           group: control
         saveResource-out-0:
           destination: control.resource.save
+        saveResourceResponse-in-0:
+          destination: object.resource.save.response
+          group: control
+        saveResourceResponse-out-0:
+          destination: control.resource.response
+
+        openResource-in-0:
+          destination: gateway.resource.open
+          group: control
+        openResource-out-0:
+          destination: control.resource.open
+        openResourceResponse-in-0:
+          destination: object.resource.open.response
+          group: control
+        openResourceResponse-out-0:
+          destination: control.resource.response
+
+        registerResource-in-0:
+          destination: gateway.resource.register
+          group: control
+        registerResource-out-0:
+          destination: control.resource.register
+        registerResourceResponse-in-0:
+          destination: object.resource.register.response
+          group: control
+        registerResourceResponse-out-0:
+          destination: control.resource.response
+
 management:
   endpoints:
     web:

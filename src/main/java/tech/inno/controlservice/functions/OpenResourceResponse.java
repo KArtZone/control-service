@@ -1,9 +1,10 @@
 package tech.inno.controlservice.functions;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-import tech.inno.controlservice.domain.OpenDto;
+import tech.inno.controlservice.domain.ResourceDto;
 
 import java.util.function.Function;
 
@@ -11,13 +12,14 @@ import static tech.inno.controlservice.config.Constants.REQUEST_ID;
 
 @Slf4j
 @Component
-public class OpenResource implements Function<Message<OpenDto>, Message<OpenDto>> {
+@RequiredArgsConstructor
+public class OpenResourceResponse implements Function<Message<ResourceDto>, Message<ResourceDto>> {
 
     @Override
-    public Message<OpenDto> apply(final Message<OpenDto> message) {
+    public Message<ResourceDto> apply(final Message<ResourceDto> message) {
         final String requestId = message.getHeaders().get(REQUEST_ID, String.class);
         log.info("RequestId: {}", requestId);
-        log.info("Processing (open) resource with id: {}", message.getPayload().getId());
+        log.info("Consume resource: {}", message.getPayload());
         return message;
     }
 }

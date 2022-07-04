@@ -1,6 +1,7 @@
 package tech.inno.controlservice.domain;
 
 import lombok.Data;
+import tech.inno.controlservice.statemachine.state.ResourceState;
 
 import java.util.UUID;
 
@@ -12,6 +13,8 @@ public class ResourceDto {
     private String title;
 
     private String description;
+
+    private ResourceState state;
 
     private String createdByName;
 
